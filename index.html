@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<!-- @falvojr: Reference article https://www.w3schools.com/howto/howto_website_create_resume.asp -->
-<!-- @falvojr: Useful link to use fontawesome (fa) icons: https://fontawesome.com/v4/icons/ -->
+
 <html lang="pt-BR">
 
   <head>
-    <title>NOME_COMPLETO</title>
+    <title>Natan Vaz</title>
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <link rel="stylesheet" type="text/css" href="cv.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -31,53 +31,97 @@
         <div class="w3-third">
   
           <div class="w3-white w3-text-grey w3-card-4">
-            <!-- @falvojr: This container has been modified to not use a profile picture. -->
-            <div class="w3-container">
-              <h2>NOME_COMPLETO</h2>
+
+            <div class="w3-container profile-picture">
+              <img src="img/perfil_natan.jpg" alt="Foto de perfil" class="profile-image">
+              <h2>NATAN FERREIRA ROSA DE JESUS VAZ</h2>
             </div>
+            
+              
             <div class="w3-container">
-              <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>CARGO</p>
-              <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>LOCAL</p>
-              <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>EMAIL</p>
-              <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>TELEFONE</p>
+              <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Estágio Superior</p>
+              <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Itabira - MG</p>
+              <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>natanvaz27@gmail.com</p>
+              <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>+5531987074636</p>
               <hr>
   
               <p class="w3-large">
-                <b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b>
+                <b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Habilidades</b>
               </p>
-              <p>TODO</p>
-              <div class="w3-light-grey w3-round-xlarge w3-small">
-                <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
+     
+              <div id="skills">
+               
               </div>
-              <p>TODO</p>
-              <div class="w3-light-grey w3-round-xlarge w3-small">
-                <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-              </div>
-              <p>TODO</p>
-              <div class="w3-light-grey w3-round-xlarge w3-small">
-                <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-              </div>
-              <p>TODO</p>
-              <div class="w3-light-grey w3-round-xlarge w3-small">
-                <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-              </div>
-              <br>
+
+              <script>
+                
+                  const languageColors = {
+                    'JavaScript': 'w3-yellow',
+                    'Python': 'w3-blue',
+                    'Java': 'w3-red',
+                    'C++': 'w3-green',
+                    'Jupyter Notebook': 'w3-orange',
+                    'C': 'w3-purple',
+                    'HTML': 'w3-teal',
+                    'Dart': 'w3-pink',
+                    'CSS': 'w3-indigo',
+                    'Shell': 'w3-lime',
+                    'TypeScript': 'w3-cyan',
+                    'PHP': 'w3-deep-orange',
+                    'Ruby': 'w3-blue-gray',
+                    'C#': 'w3-brown',
+                    'Objective-C': 'w3-light-blue',
+                    
+                  };
+
+                  fetch('https://api.github.com/users/nataovaz/repos')
+                    .then(response => response.json())
+                    .then(data => {
+                      let languageCount = {};
+                      data.forEach(repo => {
+                        let lang = repo.language;
+                        if (lang) {
+                          languageCount[lang] = (languageCount[lang] || 0) + 1;
+                        }
+                      });
+                      updateProgressBar(languageCount);
+                    });
+
+                  function updateProgressBar(languageCount) {
+                    let total = Object.values(languageCount).reduce((a, b) => a + b, 0);
+                    let skillsDiv = document.getElementById('skills');
+
+                    // Criar um array de objetos e ordená-lo com base na porcentagem
+                    let sortedLanguages = Object.entries(languageCount).map(([lang, count]) => {
+                      return {
+                        lang,
+                        percentage: Math.round((count / total) * 100)
+                      };
+                    }).sort((a, b) => b.percentage - a.percentage);
+
+                    // Criar barras de progresso
+                    for (let {lang, percentage} of sortedLanguages) {
+                      let colorClass = languageColors[lang] || 'w3-teal'; // Usa 'w3-teal' como cor padrão se a linguagem não estiver no mapeamento
+                      let html = `
+                        <p>${lang}</p>
+                        <div class="w3-light-grey w3-round-xlarge w3-small">
+                          <div class="w3-container w3-center w3-round-xlarge ${colorClass}" style="width:${percentage}%">${percentage}%</div>
+                        </div>
+                      `;
+                      skillsDiv.innerHTML += html;
+                    }
+                  }
+              </script>
+
   
               <p class="w3-large w3-text-theme">
                 <b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Idiomas</b>
               </p>
-              <p>TODO</p>
+              <p>Inglês</p>
               <div class="w3-light-grey w3-round-xlarge">
-                <div class="w3-round-xlarge w3-teal" style="height:24px;width:50%"></div>
+                <div class="w3-round-xlarge w3-teal w3-center" style="height:24px;width:30%">Iniciante</div>
               </div>
-              <p>TODO</p>
-              <div class="w3-light-grey w3-round-xlarge">
-                <div class="w3-round-xlarge w3-teal" style="height:24px;width:50%"></div>
-              </div>
-              <p>TODO</p>
-              <div class="w3-light-grey w3-round-xlarge">
-                <div class="w3-round-xlarge w3-teal" style="height:24px;width:50%"></div>
-              </div>
+              
               <br>
             </div>
           </div><br>
@@ -90,7 +134,7 @@
     
           <div class="w3-container w3-card w3-white w3-margin-bottom">
             <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-terminal fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Sobre</h2>
-            <p>TODO</p>
+            <p>Olá! Sou Natan, 22 anos, estudante de Engenharia da Computação na Universidade Federal de Itajubá. Nasci em Itabira e sou apaixonado por tecnologia e inovação. Tenho experiência em linguagens de programação como Python, C++, Flutter e Javascript.</p>
           </div>
 
           <div class="w3-container w3-card w3-white w3-margin-bottom">
@@ -98,15 +142,15 @@
               <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Experiências
             </h2>
             <div class="w3-container">
-              <h5 class="w3-opacity"><b>TODO</b></h5>
-              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>INICIO - <span class="w3-tag w3-teal w3-round">Atual</span></h6>
-              <p>TODO</p>
+              <h5 class="w3-opacity"><b>Vale - Estágio Superior</b></h5>
+              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Novembro de 2022 - <span class="w3-tag w3-teal w3-round">Atual</span></h6>
+              <p>Itabira, Minas Gerais</p>
               <hr>
             </div>
             <div class="w3-container">
-              <h5 class="w3-opacity"><b>TODO</b></h5>
-              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>INICIO - FIM</h6>
-              <p>TODO</p>
+              <h5 class="w3-opacity"><b>Universidade Federal de Itajubá - Projeto de Extensão - Professor de Python e Scratch</b></h5>
+              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Agosto de 2021 - Outubro de 2022</h6>
+              <p>Itabira, Minas Gerais</p>
             </div>
           </div>
   
@@ -115,25 +159,32 @@
               <i class="fa fa-graduation-cap fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Educação
             </h2>
             <div class="w3-container">
-              <h5 class="w3-opacity"><b>Digital Innovation One (DIO)</b></h5>
-              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>INICIO - <span class="w3-tag w3-teal w3-round">Atual</span></h6>
+              <h5 class="w3-opacity"><b>Universidade Federal de Itajubá</b></h5>
+              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2020 - <span class="w3-tag w3-teal w3-round">2025</span></h6>
+              <p>
+                Graduação, Engenharia de Computação.
+              </p>
+              <hr>
+            </div>
+            <div class="w3-container">
+              <h5 class="w3-opacity"><b>Digital Innovation One</b></h5>
+              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2020 - <span class="w3-tag w3-teal w3-round">2025</span></h6>
               <p>
                 Maior plataforma de educação aberta em TI da América Latina, com mais 1 milhão de usuários. 
                 A DIO possui parcerias com algumas das empresas mais inovadoras do mundo, proporcionando experiências 
                 de ensino imersivas e com foco em empregabilidade. Nesse contexto, seguem meus principais certificados:
               </p>
               <ul>
-                <li><a href="LINK_CERTIFICADO" target="_blank">TODO</a></li>
-                <li><a href="LINK_CERTIFICADO" target="_blank">TODO</a></li>
-                <li><a href="LINK_CERTIFICADO" target="_blank">TODO</a></li>
+                <li><a href="https://www.dio.me/certificate/D0E91887/share" target="_blank">Python para Machine Learning na Prática</a></li>
+                <li><a href="https://www.dio.me/certificate/9346B04F/share" target="_blank">Algoritmos Genéticos</a></li>
+                <li><a href="https://www.dio.me/certificate/D98674F3/share" target="_blank">AWS Official Content - Introdução à Amazon Web Services (AWS)</a></li>
+                <li><a href="https://www.dio.me/certificate/6EE270A3/share" target="_blank">Projetos ágeis com SCRUM</a></li>
+                <li><a href="https://www.dio.me/certificate/37BB9FAD/share" target="_blank">Redes Neurais Artificiais</a></li>
+                
               </ul>
               <hr>
-            </div>
-            <div class="w3-container">
-              <h5 class="w3-opacity"><b>TODO</b></h5>
-              <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>INICIO - FIM</h6>
-              <p>TODO</p>
-            </div>
+            
+            
           </div>
 
           <div class="w3-container w3-card w3-white w3-margin-bottom">
@@ -143,37 +194,26 @@
             <div class="w3-container">
               <h6 class="w3-text-teal">
                 <i class="fa fa-github fa-fw w3-margin-right"></i>
-                <a href="LINK_GITHUB" target="_blank">USUARIO_GITHUB/REPO</a>
+                <a href="https://github.com/nataovaz" target="_blank">nataovaz/repo</a>
               </h6>
-              <p>TODO</p>
+              <p>Utilizo meu GitHub como vitrine das minhas habilidades em programação, onde compartilho projetos e atividades que desenvolvi ao longo da minha trajetória acadêmica e profissional.</p>
               <hr>
             </div>
-            <div class="w3-container">
-              <h6 class="w3-text-teal">
-                <i class="fa fa-gitlab fa-fw w3-margin-right"></i>
-                <a href="LINK_GITLAB" target="_blank">USUARIO_GITLAB/REPO</a>
-              </h6>
-              <p>TODO</p>
-            </div>
-          </div>
+            
   
-          <!-- End Right Column -->
+
         </div>
   
-        <!-- End Grid -->
+
       </div>
   
-      <!-- End Page Container -->
+
     </div>
   
     <footer class="w3-container w3-teal w3-center w3-margin-top">
       <p>Minhas Redes Sociais</p>
-      <a href="LINK_GITHUB" target="_blank"><i class="fa fa-github w3-hover-opacity"></i></a>
-      <a href="LINK_LINKEDIN" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
-      <a href="LINK_FACEBOOK" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
-      <a href="LINK_INSTAGRAM" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i></a>
-      <a href="LINK_TWITTER" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i></a>
-      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+      <a href="https://github.com/nataovaz" target="_blank"><i class="fa fa-github w3-hover-opacity"></i></a>
+      <a href="https://www.linkedin.com/in/natan-vaz/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
     </footer>
   
   </body>
